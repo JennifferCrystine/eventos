@@ -12,19 +12,29 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "autor")
 public class Autor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int IdAutor;
-    @OneToOne
-    private Artigo Artigo;
-    private int OrdemAutor;
-    private String Email;
-    private String PrimeiroNome;
-    private String NomeDoMeio;
-    private String Sobrenome;
-    private String Afiliacao;
-    private String AfiliacaoEN;
-    private String Pais;
-    private String OrcID;
-    private int NumeroDePaginas;
+    private int id_autor;
+
+    @ManyToOne
+    private Artigo artigo;
+
+    private int ordem_autor;
+
+    private String email;
+
+    private String primeiro_nome;
+
+    private String nome_meio;
+
+    private String sobrenome;
+
+    private String afiliacao;
+
+    private String afiliacao_en;
+
+    private String pais;
+
+    private String orc_id;
 }

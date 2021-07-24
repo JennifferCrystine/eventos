@@ -14,16 +14,24 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "volume")
 public class Volume {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int IdVolume;
-    private int NumeroEdicao;
-    private String SiglaEvento;
-    private String Cidade;
-    private Date DataInicio;
-    private String DescricaoPT;
-    private String DescricaoEN;
-    @OneToMany
-    @OrderBy("Titulo asc")
-    private List<Artigo> Artigos;
+    private int id_volume;
+
+    private int numero_edicao;
+
+    private String sigla_evento;
+
+    private String cidade;
+
+    private Date data_inicio;
+
+    private String descricao_pt;
+
+    private String descricao_en;
+
+    @OrderBy("titulo asc")
+    @OneToMany(mappedBy = "volume")
+    private List<Artigo> artigos;
 }
