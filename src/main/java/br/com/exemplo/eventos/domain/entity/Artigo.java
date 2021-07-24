@@ -8,14 +8,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity()
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "artigo")
 public class Artigo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int IdArtigo;
+    @ManyToOne
     private Volume NumVolume;
+    @OneToMany
+    @OrderBy("PrimeiroNome asc")
+    private List<Autor> Autores;
     private int OrdemArtigo;
     private String Idioma;
     private String Titulo;
@@ -25,5 +29,4 @@ public class Artigo {
     private String PalavrasChaves;
     private String PalavrasChavesEN;
     private int NumeroDePaginas;
-    private List<Autor> Autores;
 }

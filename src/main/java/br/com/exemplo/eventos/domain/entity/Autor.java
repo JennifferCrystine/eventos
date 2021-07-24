@@ -8,21 +8,23 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity()
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "autor")
 public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int IdAutor;
+    @OneToOne
+    private Artigo Artigo;
     private int OrdemAutor;
     private String Email;
     private String PrimeiroNome;
     private String NomeDoMeio;
     private String Sobrenome;
-    private String Filiacao;
-    private String FiliacaoEN;
+    private String Afiliacao;
+    private String AfiliacaoEN;
     private String Pais;
     private String OrcID;
-    private Artigo NumeroDePaginas;
+    private int NumeroDePaginas;
 }

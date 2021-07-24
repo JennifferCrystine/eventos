@@ -3,18 +3,16 @@ package br.com.exemplo.eventos.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 
 @Data
-@Entity()
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "volume")
 public class Volume {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,5 +23,7 @@ public class Volume {
     private Date DataInicio;
     private String DescricaoPT;
     private String DescricaoEN;
+    @OneToMany
+    @OrderBy("Titulo asc")
     private List<Artigo> Artigos;
 }
