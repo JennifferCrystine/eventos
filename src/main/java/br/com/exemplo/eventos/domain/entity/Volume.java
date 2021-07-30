@@ -17,9 +17,9 @@ public class Volume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id_volume;
+    private Integer id_volume;
 
-    private int numero_edicao;
+    private Integer numero_edicao;
 
     private String sigla_evento;
 
