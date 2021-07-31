@@ -15,26 +15,26 @@ public class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id_autor;
+    private int idAutor;
 
     @ManyToOne
     private Artigo artigo;
 
-    private int ordem_autor;
+    private int ordemAutor;
 
     private String email;
 
-    private String primeiro_nome;
+    private String primeiroNome;
 
-    private String nome_meio;
+    private String nomeMeio;
 
     private String sobrenome;
 
     private String afiliacao;
 
-    private String afiliacao_en;
+    private String afiliacaoEn;
 
     private String pais;
 
-    private String orc_id;
+    private String orcId;
 }

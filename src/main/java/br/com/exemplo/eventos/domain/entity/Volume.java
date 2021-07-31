@@ -17,19 +17,19 @@ public class Volume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id_volume;
+    private Integer idVolume;
 
-    private Integer numero_edicao;
+    private Integer numeroEdicao;
 
-    private String sigla_evento;
+    private String siglaEvento;
 
     private String cidade;
 
-    private Date data_inicio;
+    private Date dataInicio;
 
-    private String descricao_pt;
+    private String descricaoPt;
 
-    private String descricao_en;
+    private String descricaoEn;
 
     @OrderBy("titulo asc")
     @OneToMany(mappedBy = "volume")

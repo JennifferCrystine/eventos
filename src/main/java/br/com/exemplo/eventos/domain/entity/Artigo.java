@@ -15,7 +15,7 @@ public class Artigo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id_artigo;
+    private int idArtigo;
 
     @ManyToOne
     private Volume volume;
@@ -24,21 +24,21 @@ public class Artigo {
     @OrderBy("primeiro_nome asc")
     private List<Autor> autores;
 
-    private int ordem_artigo;
+    private int ordemArtigo;
 
     private String idioma;
 
     private String titulo;
 
-    private String titulo_en;
+    private String tituloEn;
 
     private String resumo;
 
-    private String resumo_en;
+    private String resumoEn;
 
-    private String palavras_chaves;
+    private String palavrasChaves;
 
-    private String palavras_chaves_en;
+    private String palavrasChavesEn;
 
-    private int numero_paginas;
+    private int numeroPaginas;
 }
