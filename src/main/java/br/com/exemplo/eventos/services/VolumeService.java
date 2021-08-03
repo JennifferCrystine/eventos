@@ -1,5 +1,6 @@
 package br.com.exemplo.eventos.services;
 
+import br.com.exemplo.eventos.domain.dto.VolumeCreateRequest;
 import br.com.exemplo.eventos.domain.dto.VolumeUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Volume;
 import br.com.exemplo.eventos.domain.exceptions.VolumeNotFoundException;
@@ -33,9 +34,9 @@ public class VolumeService {
         return volumes;
     }
 
-    public Volume create(Volume volumeCreateRequest) {
+    public Volume create(VolumeCreateRequest volumeCreateRequest) {
         var novoVolume = new Volume();
-        novoVolume.setNumeroEdicao(volumeCreateRequest.getNumeroEdicao());
+        novoVolume.setNumeroEdicao(1);
         novoVolume.setCidade(volumeCreateRequest.getCidade());
         novoVolume.setSiglaEvento(volumeCreateRequest.getSiglaEvento());
         novoVolume.setDataInicio(volumeCreateRequest.getDataInicio());
@@ -58,6 +59,8 @@ public class VolumeService {
         volume.setDataInicio(volumeUpdateRequest.getDataInicio());
         volume.setDescricaoPt(volumeUpdateRequest.getDescricaoPt());
         volume.setDescricaoEn(volumeUpdateRequest.getDescricaoPt());
+        var volumeArtigos = repository.artigosDeUmVolume(volume.getIdVolume());
+        volume.setArtigos(volumeArtigos);
 
         return repository.save(volume);
     }

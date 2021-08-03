@@ -1,13 +1,13 @@
 package br.com.exemplo.eventos.domain.dto;
 
 
-import br.com.exemplo.eventos.domain.entity.Volume;
+import lombok.Data;
 
 
-
+@Data
 public class ArtigoCreateRequest {
 
-    private Volume volume;
+    private Integer volume;
 
     private int ordemArtigo;
 

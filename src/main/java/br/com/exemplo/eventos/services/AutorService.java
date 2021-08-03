@@ -4,9 +4,9 @@ import br.com.exemplo.eventos.domain.dto.AutorCreateRequest;
 import br.com.exemplo.eventos.domain.dto.AutorUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Artigo;
 import br.com.exemplo.eventos.domain.entity.Autor;
-import br.com.exemplo.eventos.domain.entity.Volume;
 import br.com.exemplo.eventos.domain.exceptions.AutorNotFoundException;
-import br.com.exemplo.eventos.repository.repository;
+import br.com.exemplo.eventos.repository.ArtigoRepository;
+import br.com.exemplo.eventos.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +15,23 @@ import java.util.Optional;
 
 @Service
 public class AutorService {
-    repository repository;
+    private final AutorRepository autorRepository;
+    private final ArtigoRepository artigoRepository;
     
     @Autowired
-    public AutorService(repository repo){
-        repository = repo;
+    public AutorService(AutorRepository autorRepository, ArtigoRepository artigoRepository){
+
+        this.autorRepository = autorRepository;
+        this.artigoRepository = artigoRepository;
     }
 
     public Optional<Autor> findById(int id){
-        return repository.findById(id);
+        return autorRepository.findById(id);
     }
 
     public List<Autor> findAll() {
 
-        List<Autor> autores = repository.findAll();
+        List<Autor> autores = autorRepository.findAll();
 
         return autores;
     }
@@ -40,7 +43,7 @@ public class AutorService {
     }
 
     public Autor update(Integer id, AutorUpdateRequest autorUpdateRequest) throws AutorNotFoundException {
-        var autorOptional = repository.findById(id);
+        var autorOptional = autorRepository.findById(id);
         if(autorOptional == null) {
             throw new AutorNotFoundException();
         }
@@ -48,7 +51,10 @@ public class AutorService {
         return criarAutor(autor, autorUpdateRequest.getArtigo(), autorUpdateRequest.getOrdemAutor(), autorUpdateRequest.getEmail(), autorUpdateRequest.getPrimeiroNome(), autorUpdateRequest.getNomeMeio(), autorUpdateRequest.getSobrenome(), autorUpdateRequest.getAfiliacao(), autorUpdateRequest.getAfiliacaoEn(), autorUpdateRequest.getPais(), autorUpdateRequest.getOrcId());
     }
 
-    private Autor criarAutor(Autor autor, Artigo artigo, int ordemAutor, String email, String primeiroNome, String nomeMeio, String sobrenome, String afiliacao, String afiliacaoEn, String pais, String orcId) {
+    private Autor criarAutor(Autor autor, Integer artigoId, int ordemAutor, String email, String primeiroNome, String nomeMeio, String sobrenome, String afiliacao, String afiliacaoEn, String pais, String orcId) {
+
+        var artigoOptional = artigoRepository.findById(artigoId);
+        var artigo = artigoOptional.get();
         autor.setArtigo(artigo);
         autor.setOrdemAutor(ordemAutor);
         autor.setEmail(email);
@@ -60,11 +66,11 @@ public class AutorService {
         autor.setPais(pais);
         autor.setOrcId(orcId);
 
-        return repository.save(autor);
+        return autorRepository.save(autor);
     }
 
 
     public void delete(int id){
-        repository.deleteById(id);
+        autorRepository.deleteById(id);
     }
 }

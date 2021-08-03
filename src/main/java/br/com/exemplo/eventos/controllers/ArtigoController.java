@@ -1,5 +1,6 @@
 package br.com.exemplo.eventos.controllers;
 
+import br.com.exemplo.eventos.domain.dto.ArtigoCreateRequest;
 import br.com.exemplo.eventos.domain.dto.ArtigoUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Artigo;
 import br.com.exemplo.eventos.domain.entity.Volume;
@@ -23,7 +24,7 @@ public class ArtigoController {
         this.service = service;
     }
 
-    @GetMapping("api/artigo/{id}")
+    @GetMapping("artigos/{id}")
     public ResponseEntity<Artigo> getArtigoById(@PathVariable("id") int id) {
         Optional<Artigo> artigo = service.findById(id);
 
@@ -34,7 +35,7 @@ public class ArtigoController {
         }
     }
 
-    @GetMapping("api/artigos")
+    @GetMapping("/artigos")
     public ResponseEntity<List<Artigo>> getAllArtigos() {
         try {
             List<Artigo> artigos = service.findAll();
@@ -49,16 +50,16 @@ public class ArtigoController {
         }
     }
 
-    @PostMapping("api/artigo")
-    public ResponseEntity<Artigo> createArtigo(@RequestBody Artigo artigo) {
+    @PostMapping("/artigos")
+    public ResponseEntity<Artigo> createArtigo(@RequestBody ArtigoCreateRequest artigoCreateRequest) {
         try {
-            return new ResponseEntity<>(service.create(artigo), HttpStatus.CREATED);
+            return new ResponseEntity<>(service.create(artigoCreateRequest), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("api/artigo/{id}")
+    @PutMapping("artigos/{id}")
     public ResponseEntity<Artigo> updateArtigo(@RequestBody ArtigoUpdateRequest artigoUpdateRequest, @PathVariable Integer id) {
         try {
             return new ResponseEntity<>(service.update(id, artigoUpdateRequest), HttpStatus.OK);
@@ -67,7 +68,7 @@ public class ArtigoController {
         }
     }
 
-    @DeleteMapping("api/artigo/{id}")
+    @DeleteMapping("artigos/{id}")
     public ResponseEntity<HttpStatus> deleteArtigo(@PathVariable Integer id) {
         try {
             service.delete(id);

@@ -1,5 +1,6 @@
 package br.com.exemplo.eventos.controllers;
 
+import br.com.exemplo.eventos.domain.dto.VolumeCreateRequest;
 import br.com.exemplo.eventos.domain.dto.VolumeUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Volume;
 import br.com.exemplo.eventos.services.VolumeService;
@@ -21,7 +22,7 @@ public class VolumeController {
         service = svc;
     }
 
-    @GetMapping("api/volume/{id}")
+    @GetMapping("volumes/{id}")
     public ResponseEntity<Volume> getVolumeById(@PathVariable("id") int id) {
         Optional<Volume> volume = service.findById(id);
 
@@ -32,7 +33,7 @@ public class VolumeController {
         }
     }
 
-    @GetMapping("api/volumes")
+    @GetMapping("volumes")
     public ResponseEntity<List<Volume>> getAllVolumes() {
         try {
             List<Volume> volumes = service.findAll();
@@ -47,16 +48,16 @@ public class VolumeController {
         }
     }
 
-    @PostMapping("api/volume")
-    public ResponseEntity<Volume> createVolume(@RequestBody Volume volume) {
+    @PostMapping("volumes")
+    public ResponseEntity<Volume> createVolume(@RequestBody VolumeCreateRequest volumeCreateRequest) {
         try {
-            return new ResponseEntity<>(service.create(volume), HttpStatus.CREATED);
+            return new ResponseEntity<>(service.create(volumeCreateRequest), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("api/volume/{id}")
+    @PutMapping("volumes/{id}")
     public ResponseEntity<Volume> updateVolume(@RequestBody VolumeUpdateRequest volume, @PathVariable Integer id) {
         try {
             return new ResponseEntity<>(service.update(id, volume), HttpStatus.OK);
@@ -65,7 +66,7 @@ public class VolumeController {
         }
     }
 
-    @DeleteMapping("api/volume/{id}")
+    @DeleteMapping("volumes/{id}")
     public ResponseEntity<HttpStatus> deleteVolume(@RequestBody Volume volume) {
         try {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

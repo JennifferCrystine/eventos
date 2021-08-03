@@ -21,7 +21,7 @@ public class Artigo {
     private Volume volume;
 
     @OneToMany(mappedBy = "artigo")
-    @OrderBy("primeiro_nome asc")
+    @OrderBy("primeiroNome asc")
     private List<Autor> autores;
 
     private int ordemArtigo;

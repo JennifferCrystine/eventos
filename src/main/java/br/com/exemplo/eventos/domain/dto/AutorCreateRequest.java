@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 @Data
 public class AutorCreateRequest {
 
-    private Artigo artigo;
+    private Integer artigo;
 
     private int ordemAutor;
 
