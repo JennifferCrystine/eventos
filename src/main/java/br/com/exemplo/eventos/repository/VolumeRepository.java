@@ -12,9 +12,5 @@ import java.util.List;
 @Repository
 public interface VolumeRepository extends JpaRepository<Volume, Integer> {
 
-    @Query(
-            nativeQuery = true,
-            value = "SELECT * FROM artigo WHERE (:volume_id_volume IS NULL OR volume_id_volume = :idVolume)"
-    )
-    List<Artigo> artigosDeUmVolume(@Param("idVolume") Integer idVolume);
+
 }

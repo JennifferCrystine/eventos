@@ -2,34 +2,39 @@ package br.com.exemplo.eventos.services;
 
 import br.com.exemplo.eventos.domain.dto.VolumeCreateRequest;
 import br.com.exemplo.eventos.domain.dto.VolumeUpdateRequest;
+import br.com.exemplo.eventos.domain.entity.Artigo;
 import br.com.exemplo.eventos.domain.entity.Volume;
 import br.com.exemplo.eventos.domain.exceptions.VolumeNotFoundException;
+import br.com.exemplo.eventos.repository.ArtigoRepository;
 import br.com.exemplo.eventos.repository.VolumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class VolumeService {
-    VolumeRepository repository;
+
+    VolumeRepository repo;
+    ArtigoRepository artigoRepository;
 
 
     @Autowired
-    public VolumeService (VolumeRepository repo) {
-        repository = repo;
+    public VolumeService (VolumeRepository repo, ArtigoRepository artigoRepository) {
+
+        this.repo = repo;
+        this.artigoRepository =artigoRepository;
     }
 
     public Optional<Volume> findById(int id){
-        return repository.findById(id);
+        return repo.findById(id);
     }
 
     public List<Volume> findAll() {
 
-        List<Volume> volumes = repository.findAll();
+        List<Volume> volumes = repo.findAll();
 
         return volumes;
     }
@@ -44,11 +49,11 @@ public class VolumeService {
         novoVolume.setDescricaoEn(volumeCreateRequest.getDescricaoEn());
         novoVolume.setArtigos(null);
 
-        return repository.save(novoVolume);
+        return repo.save(novoVolume);
     }
 
     public Volume update(Integer id, VolumeUpdateRequest volumeUpdateRequest) throws VolumeNotFoundException {
-        var volumeOptional = repository.findById(id);
+        var volumeOptional = repo.findById(id);
         if(volumeOptional == null) {
             throw new VolumeNotFoundException();
         }
@@ -59,13 +64,20 @@ public class VolumeService {
         volume.setDataInicio(volumeUpdateRequest.getDataInicio());
         volume.setDescricaoPt(volumeUpdateRequest.getDescricaoPt());
         volume.setDescricaoEn(volumeUpdateRequest.getDescricaoPt());
-        var volumeArtigos = repository.artigosDeUmVolume(volume.getIdVolume());
+        var volumeArtigos = artigoRepository.artigosDeUmVolume(volume.getIdVolume());
         volume.setArtigos(volumeArtigos);
 
-        return repository.save(volume);
+        return repo.save(volume);
+    }
+
+
+    public List<Artigo> volumeArtigos(Integer volumeId) {
+        List<Artigo> artigos = artigoRepository.artigosDeUmVolume(volumeId);
+
+        return artigos;
     }
 
     public void delete(int id){
-       repository.deleteById(id);
+        repo.deleteById(id);
     }
 }

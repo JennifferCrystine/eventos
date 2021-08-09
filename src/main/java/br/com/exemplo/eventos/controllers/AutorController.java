@@ -1,6 +1,7 @@
 package br.com.exemplo.eventos.controllers;
 
 import br.com.exemplo.eventos.domain.dto.AutorCreateRequest;
+import br.com.exemplo.eventos.domain.dto.AutorResponse;
 import br.com.exemplo.eventos.domain.dto.AutorUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Autor;
 import br.com.exemplo.eventos.domain.entity.Volume;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,21 +25,22 @@ public class AutorController {
         this.service = service;
     }
 
-    @GetMapping("api/autor/{id}")
-    public ResponseEntity<Autor> getAutorById(@PathVariable("id") int id) {
-        Optional<Autor> Autor = service.findById(id);
+    @GetMapping("autores/{id}")
+    public ResponseEntity<AutorResponse> getAutorById(@PathVariable("id") int id) {
+        AutorResponse response = new AutorResponse(service.findById(id).get());
 
-        if (Autor.isPresent()) {
-            return new ResponseEntity<Autor>(Autor.get(), HttpStatus.OK);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("api/autores")
-    public ResponseEntity<List<Autor>> getAllVolumes() {
+    @GetMapping("autores")
+    public ResponseEntity<List<AutorResponse>> getAll() {
         try {
-            List<Autor> autores = service.findAll();
+            List<AutorResponse> autores = new ArrayList<>();
+            service.findAll().forEach(a -> autores.add(new AutorResponse(a)));
 
             if (autores.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -49,26 +52,28 @@ public class AutorController {
         }
     }
 
-    @PostMapping("api/autor")
-    public ResponseEntity<Autor> createAutor(@RequestBody AutorCreateRequest autorCreateRequest) {
+    @PostMapping("autores")
+    public ResponseEntity<AutorResponse> create(@RequestBody AutorCreateRequest autorCreateRequest) {
         try {
-            return new ResponseEntity<>(service.create(autorCreateRequest), HttpStatus.CREATED);
+            AutorResponse response = new AutorResponse(service.create(autorCreateRequest));
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("api/autor/{id}")
-    public ResponseEntity<Autor> updateAutor(@RequestBody AutorUpdateRequest autorUpdateRequest, @PathVariable Integer id) {
+    @PutMapping("autores/{id}")
+    public ResponseEntity<AutorResponse> update(@RequestBody AutorUpdateRequest autorUpdateRequest, @PathVariable Integer id) {
         try {
-            return new ResponseEntity<>(service.update(id, autorUpdateRequest), HttpStatus.OK);
+            var response = new AutorResponse(service.update(id, autorUpdateRequest));
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("api/autor/{id}")
-    public ResponseEntity<HttpStatus> deleteAutor(@PathVariable Integer id) {
+    @DeleteMapping("autores/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Integer id) {
         try {
             service.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
