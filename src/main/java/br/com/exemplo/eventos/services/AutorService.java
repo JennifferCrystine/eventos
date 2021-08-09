@@ -2,7 +2,6 @@ package br.com.exemplo.eventos.services;
 
 import br.com.exemplo.eventos.domain.dto.AutorCreateRequest;
 import br.com.exemplo.eventos.domain.dto.AutorUpdateRequest;
-import br.com.exemplo.eventos.domain.entity.Artigo;
 import br.com.exemplo.eventos.domain.entity.Autor;
 import br.com.exemplo.eventos.domain.exceptions.AutorNotFoundException;
 import br.com.exemplo.eventos.repository.ArtigoRepository;
@@ -15,23 +14,23 @@ import java.util.Optional;
 
 @Service
 public class AutorService {
-    private final AutorRepository autorRepository;
+    private final AutorRepository repo;
     private final ArtigoRepository artigoRepository;
-    
-    @Autowired
-    public AutorService(AutorRepository autorRepository, ArtigoRepository artigoRepository){
 
-        this.autorRepository = autorRepository;
+    @Autowired
+    public AutorService(AutorRepository repo, ArtigoRepository artigoRepository){
+
+        this.repo = repo;
         this.artigoRepository = artigoRepository;
     }
 
     public Optional<Autor> findById(int id){
-        return autorRepository.findById(id);
+        return repo.findById(id);
     }
 
     public List<Autor> findAll() {
 
-        List<Autor> autores = autorRepository.findAll();
+        List<Autor> autores = repo.findAll();
 
         return autores;
     }
@@ -43,7 +42,7 @@ public class AutorService {
     }
 
     public Autor update(Integer id, AutorUpdateRequest autorUpdateRequest) throws AutorNotFoundException {
-        var autorOptional = autorRepository.findById(id);
+        var autorOptional = repo.findById(id);
         if(autorOptional == null) {
             throw new AutorNotFoundException();
         }
@@ -66,11 +65,11 @@ public class AutorService {
         autor.setPais(pais);
         autor.setOrcId(orcId);
 
-        return autorRepository.save(autor);
+        return repo.save(autor);
     }
 
 
     public void delete(int id){
-        autorRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

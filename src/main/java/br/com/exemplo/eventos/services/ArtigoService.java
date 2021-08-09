@@ -3,9 +3,10 @@ package br.com.exemplo.eventos.services;
 import br.com.exemplo.eventos.domain.dto.ArtigoCreateRequest;
 import br.com.exemplo.eventos.domain.dto.ArtigoUpdateRequest;
 import br.com.exemplo.eventos.domain.entity.Artigo;
-import br.com.exemplo.eventos.domain.entity.Volume;
+import br.com.exemplo.eventos.domain.entity.Autor;
 import br.com.exemplo.eventos.domain.exceptions.ArtigoNotFoundException;
 import br.com.exemplo.eventos.repository.ArtigoRepository;
+import br.com.exemplo.eventos.repository.AutorRepository;
 import br.com.exemplo.eventos.repository.VolumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,23 +16,25 @@ import java.util.Optional;
 
 @Service
 public class ArtigoService {
-    
-    ArtigoRepository repository;
+
+    ArtigoRepository repo;
     VolumeRepository volumeRepository;
-    
+    AutorRepository autorRepository;
+
     @Autowired
-    public ArtigoService(ArtigoRepository repo, VolumeRepository volumeRepository){
-        repository = repo;
+    public ArtigoService(ArtigoRepository repo, VolumeRepository volumeRepository, AutorRepository autorRepository){
+        this.repo = repo;
         this.volumeRepository = volumeRepository;
+        this.autorRepository = autorRepository;
     }
 
     public Optional<Artigo> findById(int id){
-        return repository.findById(id);
+        return repo.findById(id);
     }
 
     public List<Artigo> findAll() {
 
-        List<Artigo> artigos = repository.findAll();
+        List<Artigo> artigos = repo.findAll();
 
         return artigos;
     }
@@ -42,11 +45,11 @@ public class ArtigoService {
         criarArtigo(artigo, artigoCreateRequest.getOrdemArtigo(), artigoCreateRequest.getIdioma(), artigoCreateRequest.getTitulo(), artigoCreateRequest.getTituloEn(), artigoCreateRequest.getPalavrasChaves(), artigoCreateRequest.getPalavrasChavesEn(), artigoCreateRequest.getNumeroPaginas(), artigoCreateRequest.getVolume(), artigoCreateRequest.getResumo(), artigoCreateRequest.getResumoEn());
         artigo.setAutores(null);
 
-        return repository.save(artigo);
+        return repo.save(artigo);
     }
 
     public Artigo update(Integer id, ArtigoUpdateRequest artigoUpdateRequest) throws ArtigoNotFoundException {
-        var artigoOptional = repository.findById(id);
+        var artigoOptional = repo.findById(id);
         if(artigoOptional == null) {
             throw new ArtigoNotFoundException();
         }
@@ -54,7 +57,7 @@ public class ArtigoService {
         criarArtigo(artigo, artigoUpdateRequest.getOrdemArtigo(), artigoUpdateRequest.getIdioma(), artigoUpdateRequest.getTitulo(), artigoUpdateRequest.getTituloEn(), artigoUpdateRequest.getPalavrasChaves(), artigoUpdateRequest.getPalavrasChavesEn(), artigoUpdateRequest.getNumeroPaginas(), artigoUpdateRequest.getVolume(), artigoUpdateRequest.getResumo(), artigoUpdateRequest.getResumoEn());
 
 
-        return repository.save(artigo);
+        return repo.save(artigo);
     }
 
     private void criarArtigo(Artigo artigo, int ordemArtigo, String idioma, String titulo, String tituloEn, String palavrasChaves, String palavrasChavesEn, int numeroPaginas, Integer volumeId, String resumo, String resumoEn) {
@@ -73,7 +76,13 @@ public class ArtigoService {
     }
 
     public void delete(int id){
-        repository.deleteById(id);
+        repo.deleteById(id);
     }
 
+
+    public List<Autor> artigoAutores(Integer idArtigo) {
+        List<Autor> autores = autorRepository.autoresDeUmArtigo(idArtigo);
+
+        return autores;
+    }
 }
