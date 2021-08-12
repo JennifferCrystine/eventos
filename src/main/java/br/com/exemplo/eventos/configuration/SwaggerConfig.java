@@ -23,16 +23,17 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.exemplo.eventos.controllers"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "eventos",
+                "Eventos Rest API",
                 "Eventos Acadêmicos",
                 "1.0.0",
-                "Disponível para estudos",
-                new Contact("Universidade Iteris", "https://uff.br", "uff@uff.com.br"),
+                "https://uff.br",
+                new Contact("Universidade Federal Fluminense", "https://uff.br", "uff@uff.com.br"),
                 "", "", Collections.emptyList());
     }
 }
