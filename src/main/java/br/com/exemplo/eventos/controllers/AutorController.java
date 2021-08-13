@@ -55,6 +55,7 @@ public class AutorController {
     @PostMapping("autores")
     public ResponseEntity<AutorResponse> create(@RequestBody AutorCreateRequest autorCreateRequest) {
         try {
+            if(autorCreateRequest == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             AutorResponse response = new AutorResponse(service.create(autorCreateRequest));
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -65,6 +66,7 @@ public class AutorController {
     @PutMapping("autores/{id}")
     public ResponseEntity<AutorResponse> update(@RequestBody AutorUpdateRequest autorUpdateRequest, @PathVariable Integer id) {
         try {
+            if(autorUpdateRequest == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             var response = new AutorResponse(service.update(id, autorUpdateRequest));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

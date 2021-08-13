@@ -40,6 +40,7 @@ public class ArtigoResponse {
         this.idArtigo = artigo.getIdArtigo();
         this.ordemArtigo = artigo.getOrdemArtigo();
         this.idioma = artigo.getIdioma();
+        this.titulo = artigo.getTitulo();
         this.tituloEn = artigo.getTituloEn();
         this.resumo = artigo.getResumo();
         this.resumoEn = artigo.getResumoEn();

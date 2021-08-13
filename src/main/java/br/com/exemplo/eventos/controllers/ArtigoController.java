@@ -71,9 +71,10 @@ public class ArtigoController {
     }
 
     @PutMapping("artigos/{id}")
-    public ResponseEntity<Artigo> update(@RequestBody ArtigoUpdateRequest artigoUpdateRequest, @PathVariable Integer id) {
+    public ResponseEntity<ArtigoResponse> update(@RequestBody ArtigoUpdateRequest artigoUpdateRequest, @PathVariable Integer id) {
         try {
-            return new ResponseEntity<>(service.update(id, artigoUpdateRequest), HttpStatus.OK);
+            ArtigoResponse response = new ArtigoResponse(service.update(id, artigoUpdateRequest));
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
