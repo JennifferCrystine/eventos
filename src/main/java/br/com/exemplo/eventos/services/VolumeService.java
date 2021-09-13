@@ -9,8 +9,7 @@ import br.com.exemplo.eventos.repository.ArtigoRepository;
 import br.com.exemplo.eventos.repository.VolumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +34,14 @@ public class VolumeService {
     public List<Volume> findAll() {
 
         List<Volume> volumes = repo.findAll();
+        volumes.sort( Comparator.comparing(v -> v.getSiglaEvento()));
 
         return volumes;
     }
 
     public Volume create(VolumeCreateRequest volumeCreateRequest) {
         var novoVolume = new Volume();
-        novoVolume.setNumeroEdicao(1);
+        novoVolume.setNumeroEdicao(volumeCreateRequest.getNumeroEdicao());
         novoVolume.setCidade(volumeCreateRequest.getCidade());
         novoVolume.setSiglaEvento(volumeCreateRequest.getSiglaEvento());
         novoVolume.setDataInicio(volumeCreateRequest.getDataInicio());
@@ -73,6 +73,7 @@ public class VolumeService {
 
     public List<Artigo> volumeArtigos(Integer volumeId) {
         List<Artigo> artigos = artigoRepository.artigosDeUmVolume(volumeId);
+        artigos.sort( Comparator.comparing(artigo -> artigo.getTitulo()));
 
         return artigos;
     }

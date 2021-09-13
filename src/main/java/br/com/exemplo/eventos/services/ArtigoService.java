@@ -11,6 +11,7 @@ import br.com.exemplo.eventos.repository.VolumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,13 +37,15 @@ public class ArtigoService {
 
         List<Artigo> artigos = repo.findAll();
 
+        artigos.sort(Comparator.comparing(artigo -> artigo.getTitulo()));
+
         return artigos;
     }
 
     public Artigo create(ArtigoCreateRequest artigoCreateRequest) {
         var artigo = new Artigo();
 
-        criarArtigo(artigo, artigoCreateRequest.getOrdemArtigo(), artigoCreateRequest.getIdioma(), artigoCreateRequest.getTitulo(), artigoCreateRequest.getTituloEn(), artigoCreateRequest.getPalavrasChaves(), artigoCreateRequest.getPalavrasChavesEn(), artigoCreateRequest.getNumeroPaginas(), artigoCreateRequest.getVolume(), artigoCreateRequest.getResumo(), artigoCreateRequest.getResumoEn());
+        criarArtigo(artigo, artigoCreateRequest.getOrdemArtigo(), artigoCreateRequest.getIdioma(), artigoCreateRequest.getTitulo(), artigoCreateRequest.getTituloEn(), artigoCreateRequest.getPalavrasChaves(), artigoCreateRequest.getPalavrasChavesEn(), artigoCreateRequest.getNumeroPaginas(), artigoCreateRequest.getIdVolume(), artigoCreateRequest.getResumo(), artigoCreateRequest.getResumoEn());
         artigo.setAutores(null);
 
         return repo.save(artigo);
@@ -54,7 +57,7 @@ public class ArtigoService {
             throw new ArtigoNotFoundException();
         }
         var artigo = artigoOptional.get();
-        criarArtigo(artigo, artigoUpdateRequest.getOrdemArtigo(), artigoUpdateRequest.getIdioma(), artigoUpdateRequest.getTitulo(), artigoUpdateRequest.getTituloEn(), artigoUpdateRequest.getPalavrasChaves(), artigoUpdateRequest.getPalavrasChavesEn(), artigoUpdateRequest.getNumeroPaginas(), artigoUpdateRequest.getVolume(), artigoUpdateRequest.getResumo(), artigoUpdateRequest.getResumoEn());
+        criarArtigo(artigo, artigoUpdateRequest.getOrdemArtigo(), artigoUpdateRequest.getIdioma(), artigoUpdateRequest.getTitulo(), artigoUpdateRequest.getTituloEn(), artigoUpdateRequest.getPalavrasChaves(), artigoUpdateRequest.getPalavrasChavesEn(), artigoUpdateRequest.getNumeroPaginas(), artigoUpdateRequest.getIdVolume(), artigoUpdateRequest.getResumo(), artigoUpdateRequest.getResumoEn());
 
 
         return repo.save(artigo);
@@ -82,6 +85,8 @@ public class ArtigoService {
 
     public List<Autor> artigoAutores(Integer idArtigo) {
         List<Autor> autores = autorRepository.autoresDeUmArtigo(idArtigo);
+
+        autores.sort(Comparator.comparing(autor -> autor.getPrimeiroNome()));
 
         return autores;
     }

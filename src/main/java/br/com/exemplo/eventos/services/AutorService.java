@@ -9,6 +9,7 @@ import br.com.exemplo.eventos.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +33,15 @@ public class AutorService {
 
         List<Autor> autores = repo.findAll();
 
+        autores.sort(Comparator.comparing(autor -> autor.getPrimeiroNome()));
+
         return autores;
     }
 
 
     public Autor create(AutorCreateRequest autorCreateRequest) {
         var autor = new Autor();
-        return criarAutor(autor, autorCreateRequest.getArtigo(), autorCreateRequest.getOrdemAutor(), autorCreateRequest.getEmail(), autorCreateRequest.getPrimeiroNome(), autorCreateRequest.getNomeMeio(), autorCreateRequest.getSobrenome(), autorCreateRequest.getAfiliacao(), autorCreateRequest.getAfiliacaoEn(), autorCreateRequest.getPais(), autorCreateRequest.getOrcId());
+        return criarAutor(autor, autorCreateRequest.getIdArtigo(), autorCreateRequest.getOrdemAutor(), autorCreateRequest.getEmail(), autorCreateRequest.getPrimeiroNome(), autorCreateRequest.getNomeMeio(), autorCreateRequest.getSobrenome(), autorCreateRequest.getAfiliacao(), autorCreateRequest.getAfiliacaoEn(), autorCreateRequest.getPais(), autorCreateRequest.getOrcId());
     }
 
     public Autor update(Integer id, AutorUpdateRequest autorUpdateRequest) throws AutorNotFoundException {
@@ -47,7 +50,7 @@ public class AutorService {
             throw new AutorNotFoundException();
         }
         var autor = autorOptional.get();
-        return criarAutor(autor, autorUpdateRequest.getArtigo(), autorUpdateRequest.getOrdemAutor(), autorUpdateRequest.getEmail(), autorUpdateRequest.getPrimeiroNome(), autorUpdateRequest.getNomeMeio(), autorUpdateRequest.getSobrenome(), autorUpdateRequest.getAfiliacao(), autorUpdateRequest.getAfiliacaoEn(), autorUpdateRequest.getPais(), autorUpdateRequest.getOrcId());
+        return criarAutor(autor, autorUpdateRequest.getIdArtigo(), autorUpdateRequest.getOrdemAutor(), autorUpdateRequest.getEmail(), autorUpdateRequest.getPrimeiroNome(), autorUpdateRequest.getNomeMeio(), autorUpdateRequest.getSobrenome(), autorUpdateRequest.getAfiliacao(), autorUpdateRequest.getAfiliacaoEn(), autorUpdateRequest.getPais(), autorUpdateRequest.getOrcId());
     }
 
     private Autor criarAutor(Autor autor, Integer artigoId, int ordemAutor, String email, String primeiroNome, String nomeMeio, String sobrenome, String afiliacao, String afiliacaoEn, String pais, String orcId) {

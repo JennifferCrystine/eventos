@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 public class ArtigoUpdateRequest {
-    private Integer volume;
+    private Integer idVolume;
+
+    private Integer idArtigo;
 
     private int ordemArtigo;
 
