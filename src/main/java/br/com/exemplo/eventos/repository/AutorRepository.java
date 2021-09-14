@@ -15,7 +15,7 @@ public interface AutorRepository extends JpaRepository<Autor, Integer> {
 
     @Query(
             nativeQuery = true,
-            value = "select * from autor where artigo_id_artigo"
+            value = "select * from autor where artigo_id_artigo = :idArtigo"
     )
-    List<Autor> autoresDeUmArtigo(@Param("idVolume") Integer idArtigo);
+    List<Autor> autoresDeUmArtigo(@Param("idArtigo") Integer idArtigo);
 }
